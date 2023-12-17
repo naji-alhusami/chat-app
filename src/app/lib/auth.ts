@@ -32,6 +32,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: getGoogleCredentials().clientSecret,
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     // calbacks are actions that are taken when certain events happen that next-auth detects
     async jwt({ token, user }) {
