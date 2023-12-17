@@ -35,6 +35,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     // calbacks are actions that are taken when certain events happen that next-auth detects
     async jwt({ token, user }) {
+      //The jwt callback is called whenever a JSON Web Token (JWT) is created or updated.
       const dbUser = (await db.get(`user:${token.id}`)) as User | null;
 
       if (!dbUser) {
@@ -44,13 +45,14 @@ export const authOptions: NextAuthOptions = {
       }
 
       return {
-        id: dbUser.id,
+        id: dbUser.id, // the first id for token
         name: dbUser.name,
         email: dbUser.email,
         picture: dbUser.image,
       };
     },
     async session({ session, token }) {
+      // update session
       if (token) {
         // if we have token , we want to use token values in our app, we need to set them to our session values
         session.user.id = token.id;
@@ -58,7 +60,6 @@ export const authOptions: NextAuthOptions = {
         session.user.email = token.email;
         session.user.image = token.picture;
       }
-
       return session;
     },
     redirect() {
