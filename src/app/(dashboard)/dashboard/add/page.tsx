@@ -1,4 +1,4 @@
-import AddFriendButton from "@/app/components/ui/AddFriendButton";
+import AddFriendButton from "@/app/components/AddFriendButton";
 import React, { FC } from "react";
 
 interface Props {}

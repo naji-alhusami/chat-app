@@ -2,6 +2,7 @@ import { db } from "@/app/lib/db";
 import { UpstashRedisAdapter } from "@next-auth/upstash-redis-adapter";
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import { fetchRadis } from "../herlpers/redis";
 
 function getGoogleCredentials() {
   const clientId = process.env.GOOGLE_CLIENT_ID;
@@ -37,13 +38,17 @@ export const authOptions: NextAuthOptions = {
     // calbacks are actions that are taken when certain events happen that next-auth detects
     async jwt({ token, user }) {
       //The jwt callback is called whenever a JSON Web Token (JWT) is created or updated.
-      const dbUser = (await db.get(`user:${token.id}`)) as User | null;
+      const dbUserResult = (await fetchRadis("get", `user:${token.id}`)) as
+        | string
+        | null;
 
-      if (!dbUser) {
+      if (!dbUserResult) {
         // if the user is new (not found in db)
         token.id = user!.id; // this ! for TS to tell TS that we know that there is user and we are sure
         return token;
       }
+
+      const dbUser = JSON.parse(dbUserResult) as User;
 
       return {
         id: dbUser.id, // the first id for token

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { FC, useState } from "react";
-import Button from "./Button";
+import Button from "./ui/Button";
 import { addFriendValidator } from "@/app/lib/add-friend";
 import axios, { AxiosError } from "axios";
 import { z } from "zod";
