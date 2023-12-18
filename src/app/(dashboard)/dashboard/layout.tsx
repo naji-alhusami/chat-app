@@ -1,6 +1,8 @@
 import FriendRequestsSidebarOption from "@/app/components/FriendRequestsSidebarOption";
 import { Icon, Icons } from "@/app/components/Icons";
+import SidebarChatList from "@/app/components/SidebarChatList";
 import SignOutButton from "@/app/components/SignOutButton";
+import { getFriendsByUserId } from "@/app/herlpers/get-friends-by-user-id";
 import { fetchRadis } from "@/app/herlpers/redis";
 import { authOptions } from "@/app/lib/auth";
 import { getServerSession } from "next-auth";
@@ -34,6 +36,8 @@ const Layout = async ({ children }: LayoutProps) => {
 
   if (!session) notFound();
 
+  const friends = await getFriendsByUserId(session.user.id);
+  
   const unseenRequestCount = (
     (await fetchRadis(
       "smembers",
@@ -48,12 +52,16 @@ const Layout = async ({ children }: LayoutProps) => {
           <Icons.Logo className="h-8 w-auto text-indigo-600" />
         </Link>
 
-        <div className="text-xs font-semibold leading-6 text-gray-400">
-          Your Chats
-        </div>
+        {friends.length > 0 ? (
+          <div className="text-xs font-semibold leading-6 text-gray-400">
+            Your Chats
+          </div>
+        ) : null}
         <nav className="flex flex-1 flex-col ">
           <ul role="list" className="flex flex-1 flex-col gap-y-7">
-            <li>chats</li>
+            <li>
+              <SidebarChatList friends={friends} sessionId={session.user.id} />
+            </li>
             <li>
               <div className="text-sm font-semibold leading-6 text-gray-600">
                 Overview
@@ -75,14 +83,13 @@ const Layout = async ({ children }: LayoutProps) => {
                     </li>
                   );
                 })}
+                <li>
+                  <FriendRequestsSidebarOption
+                    sessionId={session.user.id}
+                    initialUnseenRequestCount={unseenRequestCount}
+                  />
+                </li>
               </ul>
-            </li>
-
-            <li>
-              <FriendRequestsSidebarOption
-                sessionId={session.user.id}
-                initialUnseenRequestCount={unseenRequestCount}
-              />
             </li>
 
             <li className="-mx-6 mt-auto flex items-center">
