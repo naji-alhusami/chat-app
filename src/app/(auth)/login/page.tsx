@@ -5,8 +5,6 @@ import Button from "../../components/ui/Button";
 import { signIn } from "next-auth/react";
 import toast from "react-hot-toast";
 
-interface Props {}
-
 const LoginPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
