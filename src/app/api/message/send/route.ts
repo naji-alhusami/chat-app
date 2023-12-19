@@ -2,6 +2,8 @@ import { fetchRadis } from "@/app/herlpers/redis";
 import { authOptions } from "@/app/lib/auth";
 import { db } from "@/app/lib/db";
 import { Message, messageValidator } from "@/app/lib/message";
+import { pusherServer } from "@/app/lib/pusher";
+import { toPusherKey } from "@/app/lib/utils";
 import { nanoid } from "nanoid";
 import { getServerSession } from "next-auth";
 
@@ -47,6 +49,8 @@ export async function POST(req: Request) {
       timestamp,
     };
     const message = messageValidator.parse(messageData);
+
+    pusherServer.trigger(toPusherKey(`chat:${chatId}`), "incoming-message", message);
 
     await db.zadd(`chat:${chatId}:messages`, {
       score: timestamp,

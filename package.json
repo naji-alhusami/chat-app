@@ -17,6 +17,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "date-fns": "^2.29.3",
+    "encoding": "^0.1.13",
     "lucide-react": "^0.297.0",
     "nanoid": "^5.0.4",
     "next": "14.0.4",
