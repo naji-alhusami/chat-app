@@ -22,7 +22,7 @@ async function getChatMessages(chatId: string) {
       `chat:${chatId}:messages`,
       0,
       -1 // from 0 to -1 means we are fetching without stopping
-    ); // it is of type string not messeges, because it JSON string needs to parse
+    ); // it is of type string not messeges, because if it is JSON string needs to parse
 
     const dbMessages = results.map((message) => JSON.parse(message) as Message);
 
