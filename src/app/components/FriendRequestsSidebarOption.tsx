@@ -15,7 +15,7 @@ const FriendRequestsSidebarOption: FC<FriendRequestsSidebarOptionProps> = ({
   const [unseenRequestCount, setUnseenRequestCount] = useState<number>(
     initialUnseenRequestCount
   );
-  console.log(unseenRequestCount);
+  
   return (
     <Link
       href="/dashboard/requests"
