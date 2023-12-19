@@ -21,7 +21,6 @@ const Messages: FC<MessagesProps> = ({
   chatPartner,
   chatId,
 }) => {
-  console.log("initialMessages:", initialMessages);
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const scrollDownRef = useRef<HTMLDivElement | null>(null); // this ref to scroll down directly to the last message
 
